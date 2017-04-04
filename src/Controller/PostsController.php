@@ -10,26 +10,44 @@
 namespace Controller;
 
 
+use FastD\Http\Response;
 use FastD\Http\ServerRequest;
 
 class PostsController
 {
     public function findPosts(ServerRequest $request)
     {
-        return json([
-            'msg' => 'hello dobee',
-        ]);
+        $posts = model('posts')->findPosts();
+
+        return json($posts);
     }
 
     public function findPost(ServerRequest $request)
-    {}
+    {
+        $post = model('posts')->findPost($request->getAttribute('id'));
 
-    public function createPost()
-    {}
+        return json($post);
+    }
 
-    public function patchPost()
-    {}
+    public function createPost(ServerRequest $request)
+    {
+        $post = model('posts')->createPost($request->getParsedBody());
 
-    public function deletePost()
-    {}
+        return json([], Response::HTTP_CREATED);
+    }
+
+    public function patchPost(ServerRequest $request)
+    {
+        parse_str($request->getBody(), $data);
+        $post = model('posts')->patchPost($request->getAttribute('id'), $data);
+
+        return json($post);
+    }
+
+    public function deletePost(ServerRequest $request)
+    {
+        $post = model('posts')->deletePost($request->getAttribute('id'));
+
+        return json([], Response::HTTP_NO_CONTENT);
+    }
 }

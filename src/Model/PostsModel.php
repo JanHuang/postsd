@@ -50,4 +50,18 @@ class PostsModel extends Model
             'id' => $id
         ]);
     }
+
+    public function findUserPosts($user)
+    {
+        return $this->db->select(static::TABLE, '*', [
+            'user_id' => $user
+        ]);
+    }
+
+    public function findTagPosts($tag)
+    {
+        return $this->db->select(static::TABLE, '*', [
+            'tag' => $tag
+        ]);
+    }
 }

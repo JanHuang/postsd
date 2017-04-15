@@ -20,7 +20,10 @@ class PostsModel extends Model
     {
         $post['created'] = date('Y-m-d H:i:s');
         $post['updated'] = $post['created'];
-        return $this->db->insert(static::TABLE, $post);
+        if ($this->db->insert(static::TABLE, $post)) {
+            return $this->findPost($this->db->id());
+        }
+        return false;
     }
 
     public function findPosts($page = 1)

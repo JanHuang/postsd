@@ -33,12 +33,13 @@ class PostsController
     {
         $post = model('posts')->createPost($request->getParsedBody());
 
-        return json([], Response::HTTP_CREATED);
+        return json($post, Response::HTTP_CREATED);
     }
 
     public function patchPost(ServerRequest $request)
     {
         parse_str($request->getBody(), $data);
+
         $post = model('posts')->patchPost($request->getAttribute('id'), $data);
 
         return json($post);

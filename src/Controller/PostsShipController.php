@@ -10,26 +10,38 @@ class PostsShipController
 {
     public function create(ServerRequest $request)
     {
-        return json([]);
+        $relation = model('postsShip')->create($request->getParsedBody());
+
+        return json($relation, Response::HTTP_CREATED);
     }
 
     public function patch(ServerRequest $request)
     {
-        return json([]);
+        parse_str($request->getBody(), $data);
+
+        $relation = model('postsShip')->patch($request->getAttribute('id'), $data);
+
+        return json($relation);
     }
 
     public function delete(ServerRequest $request)
     {
-        return json([]);
+        model('postsShip')->delete($request->getAttribute('id'));
+
+        return json([], Response::HTTP_NO_CONTENT);
     }
 
     public function find(ServerRequest $request)
     {
-        return json([]);
+        $relation = model('postsShip')->find($request->getAttribute('id'));
+
+        return json($relation);
     }
 
     public function select(ServerRequest $request)
     {
-        return json([]);
+        $relations = model('postsShip')->select();
+
+        return json($relations);
     }
 }

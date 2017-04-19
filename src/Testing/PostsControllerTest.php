@@ -10,7 +10,7 @@
 namespace Testing;
 
 use FastD\Http\Response;
-use FastD\Test\TestCase;
+use FastD\TestCase;
 
 class PostsControllerTest extends TestCase
 {

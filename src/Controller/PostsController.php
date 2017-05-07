@@ -31,7 +31,13 @@ class PostsController
 
     public function findPost(ServerRequest $request)
     {
-        $post = model('posts')->findPost($request->getAttribute('id'));
+        $userId = $request->getHeaderLine('x-user-id');
+
+        $post = model('posts')->findPost($request->getAttribute('id'), $userId);
+
+        if (false === $post) {
+            abort(404, sprintf('Posts %s is not found', $request->getAttribute('id')));
+        }
 
         return json($post);
     }
@@ -54,7 +60,7 @@ class PostsController
 
     public function deletePost(ServerRequest $request)
     {
-        $post = model('posts')->deletePost($request->getAttribute('id'));
+        model('posts')->deletePost($request->getAttribute('id'));
 
         return json([], Response::HTTP_NO_CONTENT);
     }

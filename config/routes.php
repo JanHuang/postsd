@@ -6,11 +6,10 @@ route()->group('/api', function () {
     route()->get('/posts/{id}', 'PostsController@findPost');
     route()->patch('/posts/{id}', 'PostsController@patchPost');
     route()->delete('/posts/{id}', 'PostsController@deletePost');
-    route()->get('/posts/user/{user}', 'UserPostsController@select');
-    route()->get('/posts/tag/{tag}', 'TagPostsController@select');
-    route()->get('/posts/relates', 'PostsShipController@select');
-    route()->get('/posts/relates/{id}', 'PostsShipController@find');
+    route()->get('/posts/tags/{tag}', 'TagPostsController@select');
+    route()->get('/posts/users/{id}', 'UserPostsController@findUserPosts');
+    route()->get('/posts/users/{id}/likes', 'UserPostsController@findUserLikesPosts');
+    route()->get('/posts/users/{id}/collects', 'UserPostsController@findUserCollectsPosts');
     route()->post('/posts/relates', 'PostsShipController@create');
-    route()->patch('/posts/relates/{id}', 'PostsShipController@patch');
     route()->delete('/posts/relates/{id}', 'PostsShipController@delete');
 });

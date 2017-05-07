@@ -14,29 +14,55 @@ use FastD\TestCase;
 
 class PostsControllerTest extends TestCase
 {
-    public function testPostsList()
+    public function testSelectPostsList()
     {
         $request = $this->request('GET', '/api/posts');
         $response = $this->handleRequest($request);
         $this->equalsStatus($response, 200);
     }
 
-    public function testTagsPosts()
+    public function testFindPosts()
     {
-        $request = $this->request('GET', '/api/posts/tag/posts');
+        $request = $this->request('GET', '/api/posts/1');
         $response = $this->handleRequest($request);
         $this->equalsStatus($response, 200);
-        $request = $this->request('GET', '/api/posts/tag/empty');
+    }
+
+    public function testNotFoundPosts()
+    {
+        $request = $this->request('GET', '/api/posts/100');
+        $response = $this->handleRequest($request);
+        $this->equalsStatus($response, 404);
+    }
+
+    public function testHasUserPosts()
+    {
+        $request = $this->request('GET', '/api/posts/1', [
+            'x-user-id' => 1
+        ]);
+        $response = $this->handleRequest($request);
+        $this->equalsStatus($response, 200);
+        $json = json_decode((string) $response->getBody(), true);
+        $this->assertEquals(1, $json['is_liked']);
+        $this->assertEquals(1, $json['is_collected']);
+    }
+
+    public function testTagsPosts()
+    {
+        $request = $this->request('GET', '/api/posts/tags/posts');
+        $response = $this->handleRequest($request);
+        $this->equalsStatus($response, 200);
+        $request = $this->request('GET', '/api/posts/tags/empty');
         $response = $this->handleRequest($request);
         $this->equalsJson($response, []);
     }
 
     public function testUserPosts()
     {
-        $request = $this->request('GET', '/api/posts/user/1');
+        $request = $this->request('GET', '/api/posts/users/1');
         $response = $this->handleRequest($request);
         $this->equalsStatus($response, 200);
-        $request = $this->request('GET', '/api/posts/user/2');
+        $request = $this->request('GET', '/api/posts/users/2');
         $response = $this->handleRequest($request);
         $this->equalsJson($response, []);
     }
@@ -46,6 +72,20 @@ class PostsControllerTest extends TestCase
         $request = $this->request('POST', '/api/posts');
         $response = $this->handleRequest($request, [
             'id' => 2,
+        ]);
+        $this->equalsStatus($response, 201);
+    }
+
+    public function testCreatePostsContent()
+    {
+        $request = $this->request('POST', '/api/posts');
+        $response = $this->handleRequest($request, [
+            'id' => 2,
+            'content' => [
+                'hello world2',
+                'abc',
+                "http://img.hb.aicdn.com/532e242b7abb7aaf8b49b635e0e2070e98d20f393c023-kH7HCQ_fw658"
+            ]
         ]);
         $this->equalsStatus($response, 201);
     }

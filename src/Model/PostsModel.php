@@ -16,16 +16,12 @@ class PostsModel extends Model
 {
     const TABLE = 'posts';
 
-    public function createPost(array $post)
-    {
-        $post['created_at'] = date('Y-m-d H:i:s');
-        $post['updated_at'] = $post['created_at'];
-        if ($this->db->insert(static::TABLE, $post)) {
-            return $this->findPost($this->db->id());
-        }
-        return false;
-    }
-
+    /**
+     * Select posts list
+     *
+     * @param int $page
+     * @return array
+     */
     public function findPosts($page = 1)
     {
         $offset = ($page - 1) * 15;
@@ -37,13 +33,96 @@ class PostsModel extends Model
         return $this->db->select(static::TABLE, '*', $where);
     }
 
-    public function findPost($id)
+    /**
+     * Find posts detail
+     *
+     * @param $id
+     * @param null $userId
+     * @return bool|mixed
+     */
+    public function findPost($id, $userId = null)
     {
-        return $this->db->get(static::TABLE, '*', [
+        $post = $this->db->get(static::TABLE, [
+            'id',
+            'user_id',
+            'title',
+            'tag',
+            'type',
+            'is_activated',
+            'created_at',
+        ], [
             'id' => $id
         ]);
+
+        if (false === $post) {
+            return false;
+        }
+
+        $post['is_liked'] = 0;
+        $post['is_collected'] = 0;
+
+        $post['content'] = $this->db->select('posts_content', ['id', 'posts_id', 'content'], [
+            'posts_id' => $id,
+        ]);
+
+        if (!empty($userId)) {
+            $relations = $this->db->select('posts_relation', ['type'], [
+                'AND' => [
+                    'user_id' => $userId,
+                    'posts_id' => $id,
+                ]
+            ]);
+            foreach ($relations as $relation) {
+                switch ($relation['type']) {
+                    case 'likes':
+                        $post['is_liked'] = 1;
+                        break;
+                    case 'collects':
+                        $post['is_collected'] = 1;
+                        break;
+                }
+            }
+        }
+
+        return $post;
     }
 
+    /**
+     * Create posts
+     *
+     * @param array $post
+     * @return bool|mixed
+     */
+    public function createPost(array $post)
+    {
+        $post['created_at'] = date('Y-m-d H:i:s');
+        $post['updated_at'] = $post['created_at'];
+
+        $contentList = [];
+        if (isset($post['content'])) {
+            $contentList = $post['content'];
+            unset($post['content']);
+        }
+        if ($this->db->insert(static::TABLE, $post)) {
+            $postsId = $this->db->id();
+            foreach ($contentList as $content) {
+                $this->db->insert('posts_content', [
+                    'posts_id' => $postsId,
+                    'content' => $content
+                ]);
+            }
+            return $this->findPost($postsId);
+        }
+        return false;
+    }
+
+    /**
+     * Patch posts
+     *
+     * @param $id
+     * @param array $post
+     * @return bool|mixed
+     */
     public function patchPost($id, array $post)
     {
         $post['updated_at'] = date('Y-m-d H:i:s');
@@ -53,6 +132,12 @@ class PostsModel extends Model
         return $this->findPost($id);
     }
 
+    /**
+     * Delete posts
+     *
+     * @param $id
+     * @return bool|int
+     */
     public function deletePost($id)
     {
         return $this->db->update(static::TABLE, ['is_activated' => 0], [
@@ -60,6 +145,12 @@ class PostsModel extends Model
         ]);
     }
 
+    /**
+     * select user posts list
+     *
+     * @param $user
+     * @return array
+     */
     public function findUserPosts($user)
     {
         return $this->db->select(static::TABLE, '*', [
@@ -67,6 +158,12 @@ class PostsModel extends Model
         ]);
     }
 
+    /**
+     * Select tag posts list
+     *
+     * @param $tag
+     * @return array
+     */
     public function findTagPosts($tag)
     {
         return $this->db->select(static::TABLE, '*', [

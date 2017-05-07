@@ -3,14 +3,27 @@
 namespace Controller;
 
 
-use FastD\Http\Response;
 use FastD\Http\ServerRequest;
 
 class UserPostsController
 {
-    public function select(ServerRequest $request)
+    public function findUserCollectsPosts(ServerRequest $request)
     {
-        $posts = model('posts')->findUserPosts($request->getAttribute('user'));
+        $userId = $request->getAttribute('id');
+        $likePosts = model('PostsShip')->findUsersPostsRelation($userId, 'likes');
+        return json($likePosts);
+    }
+
+    public function findUserLikesPosts(ServerRequest $request)
+    {
+        return json([
+            'foo' => 'bar'
+        ]);
+    }
+
+    public function findUserPosts(ServerRequest $request)
+    {
+        $posts = model('posts')->findUserPosts($request->getAttribute('id'));
 
         return json($posts);
     }

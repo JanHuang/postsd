@@ -17,7 +17,14 @@ class PostsController
 {
     public function findPosts(ServerRequest $request)
     {
-        $posts = model('posts')->findPosts();
+        $query = $request->getQueryParams();
+
+        $page = 1;
+        if (isset($query['p'])) {
+            $page = $query['p'];
+        }
+
+        $posts = model('posts')->findPosts($page);
 
         return json($posts);
     }

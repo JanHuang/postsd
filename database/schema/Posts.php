@@ -14,12 +14,11 @@ class Posts extends Migration
         $table
             ->addColumn('user_id', 'string')
             ->addColumn('title', 'string', ['limit' => 200])
-            ->addColumn('content', 'text')
             ->addColumn('tag', 'string', ['limit' => 100])
             ->addColumn('type', 'string', ['limit' => 100])
             ->addColumn('is_activated', 'integer', ['limit' => 1])
-            ->addColumn('created', 'datetime')
-            ->addColumn('updated', 'datetime')
+            ->addColumn('created_at', 'datetime')
+            ->addColumn('updated_at', 'datetime')
         ;
         return $table;
     }

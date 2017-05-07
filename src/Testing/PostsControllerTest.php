@@ -21,6 +21,26 @@ class PostsControllerTest extends TestCase
         $this->equalsStatus($response, 200);
     }
 
+    public function testTagsPosts()
+    {
+        $request = $this->request('GET', '/api/posts/tag/posts');
+        $response = $this->handleRequest($request);
+        $this->equalsStatus($response, 200);
+        $request = $this->request('GET', '/api/posts/tag/empty');
+        $response = $this->handleRequest($request);
+        $this->equalsJson($response, []);
+    }
+
+    public function testUserPosts()
+    {
+        $request = $this->request('GET', '/api/posts/user/1');
+        $response = $this->handleRequest($request);
+        $this->equalsStatus($response, 200);
+        $request = $this->request('GET', '/api/posts/user/2');
+        $response = $this->handleRequest($request);
+        $this->equalsJson($response, []);
+    }
+
     public function testCreatePosts()
     {
         $request = $this->request('POST', '/api/posts');
@@ -44,19 +64,5 @@ class PostsControllerTest extends TestCase
         $request = $this->request('DELETE', '/api/posts/1');
         $response = $this->handleRequest($request);
         $this->equalsStatus($response, Response::HTTP_NO_CONTENT);
-    }
-
-    public function testTagsPosts()
-    {
-        $request = $this->request('GET', '/api/posts/tag/posts');
-        $response = $this->handleRequest($request);
-        $this->equalsStatus($response, 200);
-    }
-
-    public function testUserPosts()
-    {
-        $request = $this->request('GET', '/api/posts/user/1');
-        $response = $this->handleRequest($request);
-        $this->equalsStatus($response, 200);
     }
 }

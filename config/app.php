@@ -12,11 +12,12 @@ return [
      * The application name.
      */
     'name' => 'postd',
+
     /*
      * Exception handle
      */
     'exception' => [
-        'handle' => function (Exception $e) {
+        'response' => function (Exception $e) {
             return [
                 'msg' => $e->getMessage(),
                 'code' => $e->getCode(),

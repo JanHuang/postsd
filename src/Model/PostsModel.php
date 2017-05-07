@@ -18,8 +18,8 @@ class PostsModel extends Model
 
     public function createPost(array $post)
     {
-        $post['created'] = date('Y-m-d H:i:s');
-        $post['updated'] = $post['created'];
+        $post['created_at'] = date('Y-m-d H:i:s');
+        $post['updated_at'] = $post['created_at'];
         if ($this->db->insert(static::TABLE, $post)) {
             return $this->findPost($this->db->id());
         }
@@ -28,7 +28,13 @@ class PostsModel extends Model
 
     public function findPosts($page = 1)
     {
-        return $this->db->select(static::TABLE, '*');
+        $offset = ($page - 1) * 15;
+
+        $where = [
+            'LIMIT' => [$offset, 15]
+        ];
+
+        return $this->db->select(static::TABLE, '*', $where);
     }
 
     public function findPost($id)
@@ -40,7 +46,7 @@ class PostsModel extends Model
 
     public function patchPost($id, array $post)
     {
-        $post['updated'] = date('Y-m-d H:i:s');
+        $post['updated_at'] = date('Y-m-d H:i:s');
         $this->db->update(static::TABLE, $post, [
             'id' => $id
         ]);

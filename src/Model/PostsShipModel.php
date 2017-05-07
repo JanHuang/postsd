@@ -29,13 +29,13 @@ class PostsShipModel extends Model
 
     public function patch($id, array $data)
     {
-        $affected = $this->db->update(static::TABLE, $data, [
+        $this->db->update(static::TABLE, $data, [
             'OR' => [
                 'id' => $id,
             ]
         ]);
 
-        return $this->find($id);
+        return $this->find($this->db->id());
     }
 
     public function create(array $data)

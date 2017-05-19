@@ -11,6 +11,10 @@ use FastD\Http\ServerRequest;
  */
 class UserPostsController
 {
+    /**
+     * @param ServerRequest $request
+     * @return \FastD\Http\Response
+     */
     public function findUserCollectsPosts(ServerRequest $request)
     {
         $userId = $request->getAttribute('id');
@@ -18,11 +22,19 @@ class UserPostsController
         return json($likePosts);
     }
 
-    public function removeUserCollectsPosts()
+    /**
+     * @param ServerRequest $request
+     * @return \FastD\Http\Response
+     */
+    public function removeUserCollectsPosts(ServerRequest $request)
     {
 
     }
 
+    /**
+     * @param ServerRequest $request
+     * @return \FastD\Http\Response
+     */
     public function findUserLikesPosts(ServerRequest $request)
     {
         $userId = $request->getAttribute('id');
@@ -30,11 +42,19 @@ class UserPostsController
         return json($likePosts);
     }
 
+    /**
+     * @param ServerRequest $request
+     * @return \FastD\Http\Response
+     */
     public function removeUserLikesPosts(ServerRequest $request)
     {
 
     }
 
+    /**
+     * @param ServerRequest $request
+     * @return \FastD\Http\Response
+     */
     public function findUserPosts(ServerRequest $request)
     {
         $posts = model('posts')->findUserPosts($request->getAttribute('id'));

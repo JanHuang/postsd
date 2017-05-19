@@ -13,8 +13,16 @@ namespace Controller;
 use FastD\Http\Response;
 use FastD\Http\ServerRequest;
 
+/**
+ * Class PostsController
+ * @package Controller
+ */
 class PostsController
 {
+    /**
+     * @param ServerRequest $request
+     * @return Response
+     */
     public function findPosts(ServerRequest $request)
     {
         $query = $request->getQueryParams();
@@ -29,6 +37,10 @@ class PostsController
         return json($posts);
     }
 
+    /**
+     * @param ServerRequest $request
+     * @return Response
+     */
     public function findPost(ServerRequest $request)
     {
         $userId = $request->getHeaderLine('x-user-id');
@@ -42,6 +54,10 @@ class PostsController
         return json($post);
     }
 
+    /**
+     * @param ServerRequest $request
+     * @return Response
+     */
     public function createPost(ServerRequest $request)
     {
         $post = model('posts')->createPost($request->getParsedBody());
@@ -49,6 +65,10 @@ class PostsController
         return json($post, Response::HTTP_CREATED);
     }
 
+    /**
+     * @param ServerRequest $request
+     * @return Response
+     */
     public function patchPost(ServerRequest $request)
     {
         parse_str($request->getBody(), $data);
@@ -58,6 +78,10 @@ class PostsController
         return json($post);
     }
 
+    /**
+     * @param ServerRequest $request
+     * @return Response
+     */
     public function deletePost(ServerRequest $request)
     {
         model('posts')->deletePost($request->getAttribute('id'));

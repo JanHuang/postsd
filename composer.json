@@ -12,7 +12,8 @@
     ],
     "require": {
         "php": ">=5.6",
-        "fastd/fastd": "^3.1"
+        "fastd/fastd": "^3.1",
+        "fzaninotto/faker": "^1.6"
     },
     "require-dev": {
         "phpunit/dbunit": "^2.0"

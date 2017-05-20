@@ -6,6 +6,7 @@ route()->group('/api', function () {
     route()->post('/posts', 'PostsController@createPost');
     route()->patch('/posts/{id}', 'PostsController@patchPost');
     route()->delete('/posts/{id}', 'PostsController@deletePost');
+    route()->get('/posts/newest', 'NewestController@findNewest');
     route()->get('/posts/tags/{tag}', 'TagPostsController@select');
     route()->get('/posts/users/{id}', 'UserPostsController@findUserPosts');
     route()->get('/posts/users/{id}/likes', 'UserPostsController@findUserLikesPosts');

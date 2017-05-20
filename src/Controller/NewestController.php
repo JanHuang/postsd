@@ -21,7 +21,7 @@ class NewestController
      * @param ServerRequest $request
      * @return JsonResponse
      */
-    public function findNewest(ServerRequest $request)
+    public function newest(ServerRequest $request)
     {
         $faker = Factory::create();
         $dateTimeObject = new DateObject();
@@ -49,6 +49,26 @@ class NewestController
                 'is_top' => 0,
                 'like_count' => $faker->randomNumber(),
                 'discussion_count' => $faker->randomNumber(),
+            ],
+        ]);
+    }
+
+    public function points()
+    {
+        $faker = Factory::create();
+        $dateTimeObject = new DateObject();
+        return json([
+            [
+                'title' => $faker->title,
+                'type' => 'news',
+                'discussion_count' => $faker->randomNumber(),
+                'published_at' => $dateTimeObject->ago(),
+            ],
+            [
+                'title' => $faker->title,
+                'type' => 'hots',
+                'discussion_count' => $faker->randomNumber(),
+                'published_at' => $dateTimeObject->ago(),
             ],
         ]);
     }

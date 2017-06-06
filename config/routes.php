@@ -6,12 +6,12 @@ route()->group('/api', function () {
     route()->post('/posts', 'PostsController@createPost');
     route()->patch('/posts/{id}', 'PostsController@patchPost');
     route()->delete('/posts/{id}', 'PostsController@deletePost');
-//    route()->get('/posts/newest', 'NewestController@newest');
-//    route()->get('/posts/points', 'NewestController@points');
-    route()->get('/posts/tags/{tag}', 'TagPostsController@select');
-    route()->get('/posts/users/{id}', 'UserPostsController@findUserPosts');
-    route()->get('/posts/users/{id}/likes', 'UserPostsController@findUserLikesPosts');
-    route()->delete('/posts/users/{id}/likes', 'UserPostsController@findUserLikesPosts');
-    route()->get('/posts/users/{id}/collects', 'UserPostsController@findUserCollectsPosts');
-    route()->delete('/posts/users/{id}/collects', 'UserPostsController@findUserCollectsPosts');
+
+
+    //  Extensions APIs
+    /*route()->get('/users/{id}/posts', 'UserPostsController@findUserPosts');
+
+    route()->get('/users/{id}/{relation}', 'UserPostsController@findUserLikesPosts');
+    route()->post('/users/{id}/{relation}', 'UserPostsController@findUserLikesPosts');
+    route()->delete('/users/{id}/{relation}/{relation_id}', 'UserPostsController@findUserLikesPosts');*/
 });

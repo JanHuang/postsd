@@ -20,17 +20,32 @@ class PostsModel extends Model
      * Select posts list
      *
      * @param int $page
+     * @param int $limit
+     * @param int $userId
+     * @param int $type
      * @return array
      */
-    public function findPosts($page = 1)
+    public function findPosts($page = 1, $limit = 15, $userId = null, $type = null)
     {
-        $offset = ($page - 1) * 15;
+        if ($limit <= 5) {
+            $limit = 5;
+        } else if ($limit >= 25) {
+            $limit = 25;
+        }
+        $offset = ($page - 1) * $limit;
 
         $where = [
-            'LIMIT' => [$offset, 15]
+            'LIMIT' => [$offset, $limit]
         ];
 
-        return $this->db->select(static::TABLE, '*', $where);
+        $data = $this->db->select(static::TABLE, '*', $where);
+
+        return [
+            'data' => $data,
+            'limit' => $limit,
+            'offset' => $offset,
+            'total' => $this->db->count(static::TABLE),
+        ];
     }
 
     /**

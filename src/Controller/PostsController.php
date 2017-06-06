@@ -26,15 +26,31 @@ class PostsController
     public function findPosts(ServerRequest $request)
     {
         $query = $request->getQueryParams();
-
         $page = 1;
+        $limit = 15;
+        $userId = null;
+        $type = null;
         if (isset($query['p'])) {
             $page = $query['p'];
         }
+        if (isset($query['limit'])) {
+            $limit = (int) $query['limit'];
+        }
+        if (isset($query['user_id'])) {
+            $userId = (int) $query['user_id'];
+        }
+        if (isset($query['type'])) {
+            $type = $query['type'];
+        }
 
-        $posts = model('posts')->findPosts($page);
+        $posts = model('posts')->findPosts($page, $limit, $userId, $type);
 
         return json($posts);
+    }
+
+    public function findUserPosts($userId)
+    {
+        return json();
     }
 
     /**

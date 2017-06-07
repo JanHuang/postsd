@@ -30,6 +30,7 @@ class PostsController
         $limit = 15;
         $userId = null;
         $type = null;
+        $tag = null;
         if (isset($query['p'])) {
             $page = $query['p'];
         }
@@ -42,8 +43,11 @@ class PostsController
         if (isset($query['type'])) {
             $type = $query['type'];
         }
+        if (isset($query['tag'])) {
+            $tag = $query['tag'];
+        }
 
-        $posts = model('posts')->findPosts($page, $limit, $userId, $type);
+        $posts = model('posts')->findPosts($page, $limit, $userId, $type, $tag);
 
         return json($posts);
     }

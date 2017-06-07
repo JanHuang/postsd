@@ -22,10 +22,11 @@ class PostsModel extends Model
      * @param int $page
      * @param int $limit
      * @param int $userId
-     * @param int $type
+     * @param string $type
+     * @param string $tag
      * @return array
      */
-    public function findPosts($page = 1, $limit = 15, $userId = null, $type = null)
+    public function findPosts($page = 1, $limit = 15, $userId = null, $type = 'posts', $tag = null)
     {
         if ($limit <= 5) {
             $limit = 5;
@@ -37,6 +38,16 @@ class PostsModel extends Model
         $where = [
             'LIMIT' => [$offset, $limit]
         ];
+        if (null !== $userId) {
+            $where['AND']['user_id'] = $userId;
+        }
+
+        if (null !== $type) {
+            $where['AND']['type'] = $type;
+        }
+        if (null !== $tag) {
+            $where['AND']['tag'] = $tag;
+        }
 
         $data = $this->db->select(static::TABLE, '*', $where);
 
@@ -44,7 +55,7 @@ class PostsModel extends Model
             'data' => $data,
             'limit' => $limit,
             'offset' => $offset,
-            'total' => $this->db->count(static::TABLE),
+            'total' => $this->db->count(static::TABLE, $where),
         ];
     }
 

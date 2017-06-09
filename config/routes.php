@@ -7,11 +7,11 @@ route()->group('/api', function () {
     route()->patch('/posts/{id}', 'PostsController@patchPost');
     route()->delete('/posts/{id}', 'PostsController@deletePost');
 
-
     //  Extensions APIs
-    /*route()->get('/users/{id}/posts', 'UserPostsController@findUserPosts');
+    route()->get('/users/{id}/posts', 'UserPostsController@findUserPosts');
 
-    route()->get('/users/{id}/{relation}', 'UserPostsController@findUserLikesPosts');
-    route()->post('/users/{id}/{relation}', 'UserPostsController@findUserLikesPosts');
-    route()->delete('/users/{id}/{relation}/{relation_id}', 'UserPostsController@findUserLikesPosts');*/
+    route()->get('/users/{id}/{relate}', 'UserPostsController@findUserRelate');
+    route()->get('/users/{id}/{relate}/{rid}', 'UserPostsController@findUserLikesPosts');
+    route()->post('/users/{id}/{relate}', 'UserPostsController@findUserLikesPosts');
+    route()->delete('/users/{id}/{relate}/{rid}', 'UserPostsController@findUserLikesPosts');
 });

@@ -3,6 +3,7 @@
 namespace Controller;
 
 
+use FastD\Http\Response;
 use FastD\Http\ServerRequest;
 
 /**
@@ -13,40 +14,25 @@ class UserPostsController
 {
     /**
      * @param ServerRequest $request
-     * @return \FastD\Http\Response
+     * @return Response
      */
-    public function findUserCollectsPosts(ServerRequest $request)
+    public function findUserRelate(ServerRequest $request)
     {
         $userId = $request->getAttribute('id');
-        $likePosts = model('PostsShip')->findUsersPostsRelation($userId, 'collects');
-        return json($likePosts);
+        $relate = $request->getAttribute('relate');
+        $query = $request->getQueryParams();
+        $page = isset($query['p']) ? (int) $query['p'] : 1;
+        $limit = isset($query['limit']) ? (int) $query['limit'] : 15;
+
+        $posts = model('PostsShip')->findUsersPostsRelation($userId, $relate, $page, $limit);
+        return json($posts);
     }
 
     /**
      * @param ServerRequest $request
      * @return \FastD\Http\Response
      */
-    public function removeUserCollectsPosts(ServerRequest $request)
-    {
-
-    }
-
-    /**
-     * @param ServerRequest $request
-     * @return \FastD\Http\Response
-     */
-    public function findUserLikesPosts(ServerRequest $request)
-    {
-        $userId = $request->getAttribute('id');
-        $likePosts = model('PostsShip')->findUsersPostsRelation($userId, 'likes');
-        return json($likePosts);
-    }
-
-    /**
-     * @param ServerRequest $request
-     * @return \FastD\Http\Response
-     */
-    public function removeUserLikesPosts(ServerRequest $request)
+    public function removeUserRelate(ServerRequest $request)
     {
 
     }
@@ -57,7 +43,11 @@ class UserPostsController
      */
     public function findUserPosts(ServerRequest $request)
     {
-        $posts = model('posts')->findUserPosts($request->getAttribute('id'));
+        $query = $request->getQueryParams();
+        $page = isset($query['p']) ? (int) $query['p'] : 1;
+        $limit = isset($query['limit']) ? (int) $query['limit'] : 15;
+
+        $posts = model('posts')->findUserPosts($request->getAttribute('id'), $page, $limit);
 
         return json($posts);
     }

@@ -31,6 +31,7 @@ class PostsController
         $userId = null;
         $type = null;
         $tag = null;
+        $relation = null;
         if (isset($query['p'])) {
             $page = $query['p'];
         }
@@ -46,15 +47,13 @@ class PostsController
         if (isset($query['tag'])) {
             $tag = $query['tag'];
         }
+        if (isset($query['relation'])) {
+            $relation = $query['relation'];
+        }
 
-        $posts = model('posts')->findPosts($page, $limit, $userId, $type, $tag);
+        $posts = model('posts')->findPosts($page, $limit, $userId, $type, $tag, $relation);
 
         return json($posts);
-    }
-
-    public function findUserPosts($userId)
-    {
-        return json();
     }
 
     /**

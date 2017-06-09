@@ -26,17 +26,19 @@ class PostsModel extends Model
      * @param string $tag
      * @return array
      */
-    public function findPosts($page = 1, $limit = 15, $userId = null, $type = 'posts', $tag = null)
+    public function findPosts($page = 1, $limit = 15, $userId = null, $type = 'posts', $tag = null, $relation)
     {
         if ($limit <= 5) {
             $limit = 5;
-        } else if ($limit >= 25) {
-            $limit = 25;
+        } else {
+            if ($limit >= 25) {
+                $limit = 25;
+            }
         }
         $offset = ($page - 1) * $limit;
 
         $where = [
-            'LIMIT' => [$offset, $limit]
+            'LIMIT' => [$offset, $limit],
         ];
         if (null !== $userId) {
             $where['AND']['user_id'] = $userId;
@@ -77,7 +79,7 @@ class PostsModel extends Model
             'is_activated',
             'created_at',
         ], [
-            'id' => $id
+            'id' => $id,
         ]);
 
         if (false === $post) {
@@ -91,12 +93,12 @@ class PostsModel extends Model
             'posts_id' => $id,
         ]);
 
-        if (!empty($userId)) {
+        if ( ! empty($userId)) {
             $relations = $this->db->select('posts_relation', ['type'], [
                 'AND' => [
                     'user_id' => $userId,
                     'posts_id' => $id,
-                ]
+                ],
             ]);
             foreach ($relations as $relation) {
                 switch ($relation['type']) {
@@ -134,11 +136,13 @@ class PostsModel extends Model
             foreach ($contentList as $content) {
                 $this->db->insert('posts_content', [
                     'posts_id' => $postsId,
-                    'content' => $content
+                    'content' => $content,
                 ]);
             }
+
             return $this->findPost($postsId);
         }
+
         return false;
     }
 
@@ -153,8 +157,9 @@ class PostsModel extends Model
     {
         $post['updated_at'] = date('Y-m-d H:i:s');
         $this->db->update(static::TABLE, $post, [
-            'id' => $id
+            'id' => $id,
         ]);
+
         return $this->findPost($id);
     }
 
@@ -167,7 +172,7 @@ class PostsModel extends Model
     public function deletePost($id)
     {
         return $this->db->update(static::TABLE, ['is_activated' => 0], [
-            'id' => $id
+            'id' => $id,
         ]);
     }
 
@@ -177,11 +182,28 @@ class PostsModel extends Model
      * @param $user
      * @return array
      */
-    public function findUserPosts($user)
+    public function findUserPosts($user, $page = 1, $limit = 15)
     {
-        return $this->db->select(static::TABLE, '*', [
-            'user_id' => $user
+        if ($limit <= 5) {
+            $limit = 5;
+        } else {
+            if ($limit >= 25) {
+                $limit = 25;
+            }
+        }
+        $offset = ($page - 1) * $limit;
+
+        $data = $this->db->select(static::TABLE, '*', [
+            'user_id' => $user,
+            'LIMIT' => [$offset, $limit],
         ]);
+
+        return [
+            'data' => $data,
+            'limit' => $limit,
+            'offset' => $offset,
+            'total' => $this->db->count(static::TABLE, ['user_id' => $user,]),
+        ];
     }
 
     /**
@@ -193,7 +215,7 @@ class PostsModel extends Model
     public function findTagPosts($tag)
     {
         return $this->db->select(static::TABLE, '*', [
-            'tag' => $tag
+            'tag' => $tag,
         ]);
     }
 }

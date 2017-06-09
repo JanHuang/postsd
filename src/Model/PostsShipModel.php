@@ -10,8 +10,15 @@ class PostsShipModel extends Model
     const TABLE = 'posts_relation';
     const LIMIT = '15';
 
-    public function findUsersPostsRelation($userId, $type = null)
+    public function findUsersPostsRelation($userId, $type = null, $page = 1, $limit = 15)
     {
+        if ($limit <= 5) {
+            $limit = 5;
+        } else if ($limit >= 25) {
+            $limit = 25;
+        }
+        $offset = ($page - 1) * 15;
+
         $where = [
             'AND' => [
                 'user_id' => $userId,
@@ -22,19 +29,36 @@ class PostsShipModel extends Model
             $where['AND']['type'] = $type;
         }
 
+        $total = $this->db->count(static::TABLE, [
+            'AND' => [
+                'user_id' => $userId,
+                'type' => $type
+            ]
+        ]);
+
         $sql = <<<SQL
 SELECT 
-  posts.*,
-  1 as `is_liked`,
-  1 as `is_collected`
+  posts.*
 FROM 
   posts_relation 
   LEFT JOIN 
   posts 
   ON posts.id = posts_relation.posts_id 
-WHERE posts_relation.user_id = {$userId};
+WHERE 
+  posts_relation.user_id = {$userId}
+  AND
+  posts_relation.type = '{$type}'
+LIMIT {$offset}, {$limit};
 SQL;
-        return $this->db->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
+
+        $data = $this->db->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
+
+        return [
+            'data' => $data,
+            'total' => $total,
+            'limit' => $limit,
+            'offset' => $offset
+        ];
     }
 
     public function select($page = 1)

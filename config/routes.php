@@ -11,7 +11,6 @@ route()->group('/api', function () {
     route()->get('/users/{id}/posts', 'UserPostsController@findUserPosts');
 
     route()->get('/users/{id}/{relate}', 'UserPostsController@findUserRelate');
-    route()->get('/users/{id}/{relate}/{rid}', 'UserPostsController@findUserLikesPosts');
-    route()->post('/users/{id}/{relate}', 'UserPostsController@findUserLikesPosts');
-    route()->delete('/users/{id}/{relate}/{rid}', 'UserPostsController@findUserLikesPosts');
+    route()->post('/users/{id}/{relate}', 'UserPostsController@createUserRelate');
+    route()->delete('/users/{id}/{relate}/{rid}', 'UserPostsController@removeUserRelate');
 });

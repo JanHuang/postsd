@@ -128,9 +128,15 @@ SQL;
      */
     public function create(array $data)
     {
-        $id = $this->db->insert(static::TABLE, $data);
+        if (false !== ($row = $this->db->get(static::TABLE, 'id', [
+            'AND' => $data
+        ]))) {
+            return $this->find($row['id']);
+        }
+        
+        $this->db->insert(static::TABLE, $data);
 
-        return $this->find($id);
+        return $this->find($this->db->id());
     }
 
     /**

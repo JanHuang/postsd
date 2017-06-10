@@ -5,11 +5,23 @@ namespace Model;
 
 use FastD\Model\Model;
 
+/**
+ * Undocumented class
+ */
 class PostsShipModel extends Model
 {
     const TABLE = 'posts_relation';
     const LIMIT = '15';
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $userId
+     * @param [type] $type
+     * @param integer $page
+     * @param integer $limit
+     * @return void
+     */
     public function findUsersPostsRelation($userId, $type = null, $page = 1, $limit = 15)
     {
         if ($limit <= 5) {
@@ -61,6 +73,12 @@ SQL;
         ];
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param integer $page
+     * @return void
+     */
     public function select($page = 1)
     {
         $offset = ($page - 1) * static::LIMIT;
@@ -69,6 +87,12 @@ SQL;
         ]);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $id
+     * @return void
+     */
     public function find($id)
     {
         return $this->db->get(static::TABLE, '*', [
@@ -78,6 +102,13 @@ SQL;
         ]);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $id
+     * @param array $data
+     * @return void
+     */
     public function patch($id, array $data)
     {
         $this->db->update(static::TABLE, $data, [
@@ -89,6 +120,12 @@ SQL;
         return $this->find($this->db->id());
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array $data
+     * @return void
+     */
     public function create(array $data)
     {
         $id = $this->db->insert(static::TABLE, $data);
@@ -96,6 +133,12 @@ SQL;
         return $this->find($id);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $id
+     * @return void
+     */
     public function delete($id)
     {
         return $this->db->delete(static::TABLE, [

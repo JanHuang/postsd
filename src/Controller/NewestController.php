@@ -15,6 +15,9 @@ use FastD\Http\JsonResponse;
 use FastD\Http\ServerRequest;
 use FastD\Utils\DateObject;
 
+/**
+ * Undocumented class
+ */
 class NewestController
 {
     /**

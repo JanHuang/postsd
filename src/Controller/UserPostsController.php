@@ -34,7 +34,11 @@ class UserPostsController
      */
     public function removeUserRelate(ServerRequest $request)
     {
+        model('PostsShip')->delete($request->getAttribute('rid'));
 
+        return json([
+            'status' => 'ok'
+        ]);
     }
 
     /**

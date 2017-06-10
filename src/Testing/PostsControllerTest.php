@@ -49,22 +49,22 @@ class PostsControllerTest extends TestCase
 
     public function testTagsPosts()
     {
-        $request = $this->request('GET', '/api/posts/tags/posts');
-        $response = $this->handleRequest($request);
+        $request = $this->request('GET', '/api/posts');
+        $response = $this->handleRequest($request, ['tag' => 'posts']);
         $this->equalsStatus($response, 200);
-        $request = $this->request('GET', '/api/posts/tags/empty');
-        $response = $this->handleRequest($request);
-        $this->equalsJson($response, []);
+        $request = $this->request('GET', '/api/posts');
+        $response = $this->handleRequest($request, ['tag' => 'empty']);
+        $this->equalsJson($response, ['data' => [], 'limit' => 15, 'offset' => 0, 'total' => 0, ]);
     }
 
     public function testUserPosts()
     {
-        $request = $this->request('GET', '/api/posts/users/1');
+        $request = $this->request('GET', '/api/users/1/posts');
         $response = $this->handleRequest($request);
         $this->equalsStatus($response, 200);
-        $request = $this->request('GET', '/api/posts/users/2');
+        $request = $this->request('GET', '/api/users/2/posts');
         $response = $this->handleRequest($request);
-        $this->equalsJson($response, []);
+        $this->equalsJson($response, ['data' => [], 'limit' => 15, 'offset' => 0, 'total' => 0, ]);
     }
 
     public function testCreatePosts()

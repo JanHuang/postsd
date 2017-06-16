@@ -14,6 +14,7 @@ class PostsContent extends Migration
         $table = $this->table('posts_content');
         $table
             ->addColumn('posts_id', 'string')
+            ->addColumn('img', 'string', ['length' => 255])
             ->addColumn('content', 'text')
         ;
         return $table;

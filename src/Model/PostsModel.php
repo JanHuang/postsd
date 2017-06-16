@@ -89,7 +89,7 @@ class PostsModel extends Model
         $post['is_liked'] = 0;
         $post['is_collected'] = 0;
 
-        $post['content'] = $this->db->select('posts_content', ['id', 'posts_id', 'content'], [
+        $post['content'] = $this->db->select('posts_content', ['id', 'posts_id', 'img', 'content'], [
             'posts_id' => $id,
         ]);
 

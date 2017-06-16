@@ -60,6 +60,7 @@ WHERE
   posts_relation.user_id = {$userId}
   AND
   posts_relation.type = '{$type}'
+ORDER BY posts.created_at DESC 
 LIMIT {$offset}, {$limit};
 SQL;
 
@@ -83,7 +84,8 @@ SQL;
     {
         $offset = ($page - 1) * static::LIMIT;
         return $this->db->select(static::TABLE, '*', [
-            'LIMIT' => [$offset, static::LIMIT]
+            'LIMIT' => [$offset, static::LIMIT],
+            'ORDER' => ['created_at' => 'DESC'],
         ]);
     }
 

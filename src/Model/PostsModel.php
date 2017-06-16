@@ -26,7 +26,7 @@ class PostsModel extends Model
      * @param string $tag
      * @return array
      */
-    public function findPosts($page = 1, $limit = 15, $userId = null, $type = 'posts', $tag = null, $relation)
+    public function findPosts($page = 1, $limit = 15, $userId = null, $type = 'posts', $tag = null)
     {
         if ($limit <= 5) {
             $limit = 5;
@@ -39,6 +39,7 @@ class PostsModel extends Model
 
         $where = [
             'LIMIT' => [$offset, $limit],
+            'ORDER' => ['created_at' => 'DESC'],
         ];
         if (null !== $userId) {
             $where['AND']['user_id'] = $userId;
@@ -196,6 +197,7 @@ class PostsModel extends Model
         $data = $this->db->select(static::TABLE, '*', [
             'user_id' => $user,
             'LIMIT' => [$offset, $limit],
+            'ORDER' => ['created_at' => 'DESC'],
         ]);
 
         return [
@@ -216,6 +218,7 @@ class PostsModel extends Model
     {
         return $this->db->select(static::TABLE, '*', [
             'tag' => $tag,
+            'ORDER' => ['created_at' => 'DESC'],
         ]);
     }
 }

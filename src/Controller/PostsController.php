@@ -51,7 +51,7 @@ class PostsController
             $relation = $query['relation'];
         }
 
-        $posts = model('posts')->findPosts($page, $limit, $userId, $type, $tag, $relation);
+        $posts = model('posts')->findPosts($page, $limit, $userId, $type, $tag);
 
         return json($posts);
     }

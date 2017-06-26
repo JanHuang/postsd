@@ -20,7 +20,7 @@ class PostsShipModel extends Model
      * @param [type] $type
      * @param integer $page
      * @param integer $limit
-     * @return void
+     * @return array
      */
     public function findUsersPostsRelation($userId, $type = null, $page = 1, $limit = 15)
     {
@@ -29,7 +29,7 @@ class PostsShipModel extends Model
         } else if ($limit >= 25) {
             $limit = 25;
         }
-        $offset = ($page - 1) * 15;
+        $offset = ($page - 1) * $limit;
 
         $where = [
             'AND' => [

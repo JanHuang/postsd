@@ -10,9 +10,8 @@
 namespace Testing;
 
 use FastD\Http\Response;
-use FastD\TestCase;
 
-class PostsControllerTest extends TestCase
+class PostsControllerTest extends ApiTestCase
 {
     public function testSelectPostsList()
     {

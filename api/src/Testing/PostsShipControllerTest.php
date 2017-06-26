@@ -9,15 +9,13 @@
 
 namespace Testing;
 
-use FastD\TestCase;
-
-class PostsShipControllerTest extends TestCase
+class PostsShipControllerTest extends ApiTestCase
 {
     public function testFindUsersCollectPosts()
     {
         $request = $this->request('GET', '/api/users/1/collects');
         $response = $this->handleRequest($request);
-        // echo $response;
+        $this->equalsJsonResponseHasKey($response, ['data', 'total', 'limit', 'offset']);
     }
 
     public function testFindUsersLikePosts()
@@ -42,7 +40,6 @@ class PostsShipControllerTest extends TestCase
             'posts_id' => 1,
         ]);
         $this->equalsStatus($response, 201);
-        echo $response;
         $request = $this->request('GET', '/api/users/1/demo');
         $response = $this->handleRequest($request);
         $json = json_decode((string) $response->getBody(), true);

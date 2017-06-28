@@ -3,6 +3,7 @@
 namespace Admin\Controller;
 
 
+use Admin\Model\PostsShipModel;
 use FastD\Http\Response;
 use FastD\Http\ServerRequest;
 
@@ -24,7 +25,8 @@ class UserPostsController
         $page = isset($query['p']) ? (int) $query['p'] : 1;
         $limit = isset($query['limit']) ? (int) $query['limit'] : 15;
 
-        $posts = model('PostsShip')->findUsersPostsRelation($userId, $relate, $page, $limit);
+        $postsShipModel = new PostsShipModel(database());
+        $posts = $postsShipModel->findUsersPostsRelation($userId, $relate, $page, $limit);
         return json($posts);
     }
 
@@ -40,8 +42,8 @@ class UserPostsController
         if (empty($postsId)) {
             abort(400);
         }
-
-        $result = model('PostsShip')->create([
+        $postsShipModel = new PostsShipModel(database());
+        $result = $postsShipModel->create([
             'user_id' => $userId,
             'type' => $relate,
             'posts_id' => $postsId

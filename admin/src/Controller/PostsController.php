@@ -10,6 +10,7 @@
 namespace Admin\Controller;
 
 
+use Admin\Model\PostsModel;
 use FastD\Http\Response;
 use FastD\Http\ServerRequest;
 
@@ -47,11 +48,9 @@ class PostsController
         if (isset($query['tag'])) {
             $tag = $query['tag'];
         }
-        if (isset($query['relation'])) {
-            $relation = $query['relation'];
-        }
+        $postsModel = new PostsModel(database());
 
-        $posts = model('posts')->findPosts($page, $limit, $userId, $type, $tag);
+        $posts = $postsModel->findPosts($page, $limit, $userId, $type, $tag);
 
         return json($posts);
     }
@@ -64,7 +63,7 @@ class PostsController
     {
         $userId = $request->getHeaderLine('x-user-id');
 
-        $post = model('posts')->findPost($request->getAttribute('id'), $userId);
+        $post = (new PostsModel(database()))->findPost($request->getAttribute('id'), $userId);
 
         if (false === $post) {
             abort(404, sprintf('Posts %s is not found', $request->getAttribute('id')));
@@ -79,7 +78,7 @@ class PostsController
      */
     public function createPost(ServerRequest $request)
     {
-        $post = model('posts')->createPost($request->getParsedBody());
+        $post = (new PostsModel(database()))->createPost($request->getParsedBody());
 
         return json($post, Response::HTTP_CREATED);
     }
@@ -92,7 +91,7 @@ class PostsController
     {
         parse_str($request->getBody(), $data);
 
-        $post = model('posts')->patchPost($request->getAttribute('id'), $data);
+        $post = (new PostsModel(database()))->patchPost($request->getAttribute('id'), $data);
 
         return json($post);
     }
@@ -103,7 +102,7 @@ class PostsController
      */
     public function deletePost(ServerRequest $request)
     {
-        model('posts')->deletePost($request->getAttribute('id'));
+        (new PostsModel(database()))->deletePost($request->getAttribute('id'));
 
         return json([], Response::HTTP_NO_CONTENT);
     }

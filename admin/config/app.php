@@ -9,6 +9,6 @@
 
 $app = include __DIR__ . '/../../config/app.php';
 
-$app['services'][] = \FastD\ServiceProvider\RouteServiceProvider::class;
+$app['services'][] = \Admin\Services\Router::class;
 
 return $app;

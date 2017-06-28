@@ -93,7 +93,7 @@ SQL;
      * Undocumented function
      *
      * @param [type] $id
-     * @return void
+     * @return array
      */
     public function find($id)
     {
@@ -109,7 +109,7 @@ SQL;
      *
      * @param [type] $id
      * @param array $data
-     * @return void
+     * @return array
      */
     public function patch($id, array $data)
     {
@@ -126,7 +126,7 @@ SQL;
      * Undocumented function
      *
      * @param array $data
-     * @return void
+     * @return array
      */
     public function create(array $data)
     {

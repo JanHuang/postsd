@@ -1,16 +1,10 @@
 <?php
 /**
  * @author    jan huang <bboyjanhuang@gmail.com>
- * @copyright 2016
+ * @copyright 2017
  *
  * @see      https://www.github.com/janhuang
  * @see      http://www.fast-d.cn/
  */
 
-include __DIR__ . '/../vendor/autoload.php';
-
-use FastD\Application;
-
-$app = new Application(__DIR__ . '/..');
-
-$app->run();
+return include __DIR__ . '/../../config/cache.php';

@@ -7,7 +7,7 @@
  * @link      http://www.fast-d.cn/
  */
 
-include __DIR__ . '/../vendor/autoload.php';
+include __DIR__ . '/../../vendor/autoload.php';
 
 use FastD\Application;
 
